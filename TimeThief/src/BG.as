@@ -11,8 +11,8 @@ package
 		
 		public function BG() 
 		{
-			this.width = 1296;
-			this.height = 577;
+			this.width = 1200;
+			this.height = 600;
 		}
 		
 		override public function update():void

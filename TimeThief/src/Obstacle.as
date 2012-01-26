@@ -16,7 +16,6 @@ package
 			
 			this.x = x;
 			this.y = y;
-			setHitboxTo(this);
 			type = "obstacle";
 			
 		}

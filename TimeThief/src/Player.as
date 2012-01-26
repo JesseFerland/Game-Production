@@ -32,10 +32,15 @@ package
 		public function Player(x:Number = 0, y:Number = 0 ) 
 		{
 			super(x, y);
+			
 			this.x = x;
 			this.y = y;
+			
+			this.width = 150;
+			this.height = 150;
+			
 			graphic = new Image(CHARACTER);
-			setHitbox(145, 168, this.x, this.y);
+			setHitbox(150, 150, this.x, this.y);
 			type = "player";
 		}
 		override public function update():void
@@ -102,9 +107,9 @@ package
 				trace("test");
 			}*/
 			
-			if (collide("obstacle", x, y))
+			if (collide("obstacle", this.x, this.y))
 			{
-				trace("collision");
+				trace("collision ", x, y);
 			}
 
 		}
