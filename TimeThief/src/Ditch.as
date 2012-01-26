@@ -3,7 +3,6 @@ package
 	
 	import net.flashpunk.Graphic;
 	import net.flashpunk.graphics.Image;
-	import net.flashpunk.masks.Pixelmask;
 	
 	/**
 	 * ...
@@ -17,16 +16,21 @@ package
 		{	
 			this.x = x - 75;
 			this.y = y - 75;  //So when placing on the level editor, place according to collidble bottom
-			trace("ditch", this.x, this.y);
-			super(this.x, this.y);
 			
-			
+			super(this.x, this.y, x, y );	//Collision x is different than x because it is olny colldiable on the bottom half		
 			
 			graphic = new Image(DITCH);
-			setHitbox(75, 75, x, y) //Make only the bottom right of the image collidable
 			
 			this.width = 150;
 			this.height = 150;
+		}
+		
+		override public function update():void
+		{
+			super.update();
+			
+			this.collideX = this.x + 75;
+			this.collideY = this.y + 75;
 		}
 		
 	}

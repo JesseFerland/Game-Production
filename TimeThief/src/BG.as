@@ -13,6 +13,8 @@ package
 		{
 			this.width = 1200;
 			this.height = 600;
+			
+			type = "BG";
 		}
 		
 		override public function update():void

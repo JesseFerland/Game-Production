@@ -1,5 +1,6 @@
 package  
 {
+	import net.flashpunk.Entity;
 	import net.flashpunk.World;
 	import net.flashpunk.FP;
 	
@@ -14,35 +15,30 @@ package
 		public static var pastBG2:PastBG;
 		public static var futureBG1:FutureBG;
 		public static var futureBG2:FutureBG;
-		//public static var ditch:Ditch;
 		
 		public static const STARTING_X:int = 50;
 		public static const STARTING_Y:int = 400;
 		
-		//public const TILE_HEIGHT:int = 58;
-		//public const TILE_WIDTH:int = 100;
-		public const TILE_SIZE:int = 75;
+		public static const TILE_SIZE:int = 75;
 		public const MAP_Y:int = 8;
 		public const MAP_X:int = 32;
+		
+		public var obstacles:Array = new Array();
 		
 		public var map:Array = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 								[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 								[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 								[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 								[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-								[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-								[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-								[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0]];
+								[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+								[0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3],
+								[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0]];
 		
 		public function Level1() 
 		{
 			loadMap();
 			Level1.player = new Player(STARTING_X, STARTING_Y);
 			add( Level1.player );
-			
-			//Level1.testDitch = new Ditch(Level1.pastBG1.width, Level1.player.y);			
-			//add( Level1.testDitch );
-			
 		}
 		
 		public function loadMap():void
@@ -69,10 +65,28 @@ package
 				{
 					x = j * TILE_SIZE;
 					y = i * TILE_SIZE;
+					
+					
 					switch (map[i][j])
 					{
 						case 1:		var ditch:Ditch = new Ditch(x, y);
 									add( ditch );
+									obstacles.push(ditch);
+									break;
+									
+						case 2:		var coin:Coin = new Coin(x, y);
+									add( coin );
+									obstacles.push(coin);
+									break;
+									
+						case 3:		var goblet:Goblet = new Goblet(x, y);
+									add( goblet );
+									obstacles.push(goblet);
+									break;
+									
+						case 4: 	var knight:Knight = new Knight(x, y);
+									add( knight );
+									obstacles.push(knight);
 									break;
 						
 						default:	break;
@@ -85,6 +99,20 @@ package
 		{
 			super.update();
 			
+			for (var i:int = 0; i < obstacles.length; i++)
+			{
+				//trace("here");
+				///STILL NEED TO REMOVE WHEN OFF MAP
+				if (Level1.player.blinkTo == false) //If the player is not in the future
+				{
+					if(collideRect("player", obstacles[i].collideX, obstacles[i].collideY, obstacles[i].collideWidth, obstacles[i].collideHeight))
+					{
+						trace("HIT");
+						break;
+					}
+				}
+			}					
+						
 			if (Level1.player.blinkTo)
 			{
 				bringToFront( futureBG1 );
@@ -99,6 +127,8 @@ package
 				Level1.player.blinkTo = false;
 				Level1.player.blinkBack = false;
 			}
+			
+			
 		}
 		
 	}

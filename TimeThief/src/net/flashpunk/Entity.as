@@ -176,7 +176,7 @@ package net.flashpunk
 			}
 			this.x = _x; this.y = _y;
 			return null;
-		}
+		} 
 		
 		/**
 		 * Checks for collision against multiple Entity types.
@@ -251,6 +251,17 @@ package net.flashpunk
 		 * @param	rHeight		Height of the rectangle.
 		 * @return	If they overlap.
 		 */
+		
+		/*public function collideRect(type:String, rX:Number, rY:Number, rWidth:Number, rHeight:Number):Entity
+		{
+			var e:Entity = _typeFirst[type];
+			while (e)
+			{
+				if (e.collideRect(e.x, e.y, rX, rY, rWidth, rHeight)) return e;
+				e = e._typeNext;
+			}
+			return null;
+		}*/
 		public function collideRect(x:Number, y:Number, rX:Number, rY:Number, rWidth:Number, rHeight:Number):Boolean
 		{
 			if (x - originX + width >= rX && y - originY + height >= rY

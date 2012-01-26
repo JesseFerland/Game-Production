@@ -15,8 +15,8 @@ package
 		[Embed(source = 'assets/character.png')] private const CHARACTER:Class;
 		
 		public var speed:int = 8;
-		public var blinkTo:Boolean = false;
-		public var blinkBack:Boolean = false;
+		public var blinkTo:Boolean;
+		public var blinkBack:Boolean;
 		
 		private var jumpSpeed:int = 5;
 		private var fallSpeed:int = 8;		
@@ -25,9 +25,7 @@ package
 		private var spaceIsPressable:Boolean = true;
 		private var canJump:Boolean = true;
 		private var jump:Boolean = false;
-		private var jumpCounter:int = 0;
-		
-		
+		private var jumpCounter:int = 0;		
 		
 		public function Player(x:Number = 0, y:Number = 0 ) 
 		{
@@ -40,8 +38,10 @@ package
 			this.height = 150;
 			
 			graphic = new Image(CHARACTER);
-			setHitbox(150, 150, this.x, this.y);
 			type = "player";
+			
+			blinkTo = false;
+			blinkBack = false;
 		}
 		override public function update():void
 		{	
@@ -99,18 +99,20 @@ package
 				if (blinkCounter == 0)
 				{
 					blinkBack = true;
+					blinkTo = false;
 				}
 			}
+			
 			
 			/*if (this.x < (Level1.testDitch.x + 5) && this.x > (Level1.testDitch.x - 5))
 			{
 				trace("test");
-			}*/
-			
-			if (collide("obstacle", this.x, this.y))
-			{
-				trace("collision ", x, y);
 			}
+			
+			if (collideWith("obstacle", this.x, this.y))
+			{
+				trace("collision ", this.x, this.y);
+			}*/
 
 		}
 		
@@ -118,9 +120,15 @@ package
 		{
 			spaceIsPressable = false;
 			blinkTo = true;
+			blinkBack = false;
 			blinkCounter = 50;
 			spaceHoldCounter = 0;
 			canJump = false;
+		}
+		
+		public function inFuture():Boolean
+		{
+			return blinkTo;
 		}
 		
 	}
