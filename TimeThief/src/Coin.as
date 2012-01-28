@@ -6,7 +6,7 @@ package
 	 * ...
 	 * @author Jesse Ferland
 	 */
-	public class Coin extends Obstacle 
+	public class Coin extends Collectable 
 	{
 		
 		[Embed(source = 'assets/coin.png')] private const COIN:Class;
@@ -24,15 +24,6 @@ package
 			this.height = 75;
 			
 		}
-		
-		override public function update():void
-		{
-			super.update();
-			
-			this.collideX = this.x;
-			this.collideY = this.y;
-		}
-		
 		
 	}
 

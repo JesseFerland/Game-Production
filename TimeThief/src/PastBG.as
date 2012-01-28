@@ -10,12 +10,11 @@ package
 	 */
 	public class PastBG extends BG
 	{
-		[Embed(source = 'assets/BackgroundPast.jpg')] private const PAST:Class;
+		[Embed(source = 'assets/BackgroundPast.png')] private const PAST:Class;
 		
 		public function PastBG() 
 		{
-			graphic = new Image(PAST);
-			
+			graphic = new Image(PAST);			
 		}
 		
 	}

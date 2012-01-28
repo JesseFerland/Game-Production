@@ -10,7 +10,7 @@ package
 	 */
 	public class FutureBG extends BG 
 	{
-		[Embed(source = 'assets/BackgroundFuture.jpg')] private const FUTURE:Class;
+		[Embed(source = 'assets/BackgroundFuture.png')] private const FUTURE:Class;
 		
 		public function FutureBG() 
 		{

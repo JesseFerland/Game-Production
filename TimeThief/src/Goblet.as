@@ -6,7 +6,7 @@ package
 	 * ...
 	 * @author Jesse Ferland
 	 */
-	public class Goblet extends Obstacle 
+	public class Goblet extends Collectable 
 	{
 		[Embed(source = 'assets/goblet.png')] private const GOBLET:Class;
 		
@@ -24,14 +24,6 @@ package
 			
 			
 			
-		}
-		
-		override public function update():void
-		{
-			super.update();
-			
-			this.collideX = this.x;
-			this.collideY = this.y;
 		}
 		
 	}

@@ -148,6 +148,11 @@
 			return (row % _rows) * _columns + (column % _columns);
 		}
 		
+		public function getComplete():Boolean
+		{
+			return complete;
+		}
+		
 		/**
 		 * Sets the current display frame based on the column and row of the source image.
 		 * When you set the frame, any animations playing will be stopped to force the frame.
