@@ -2,6 +2,7 @@ package
 {
 	import net.flashpunk.Graphic;
 	import net.flashpunk.graphics.Image;
+	import net.flashpunk.Mask;
 	
 	/**
 	 * ...

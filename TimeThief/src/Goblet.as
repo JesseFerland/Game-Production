@@ -18,7 +18,7 @@ package
 			this.width = 75;
 			this.height = 75;
 			
-			super(this.x, this.y, x, y); //Same x and y for position and collision
+			super(this.x, this.y, x, y, 25); //Same x and y for position and collision
 			
 			graphic = new Image(GOBLET);
 			

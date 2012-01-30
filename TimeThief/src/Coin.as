@@ -16,7 +16,7 @@ package
 			this.x = x;
 			this.y = y;
 			
-			super(this.x, this.y, x, y); //Same x and y for position and collision
+			super(this.x, this.y, x, y, 5); //Same x and y for position and collision
 			
 			graphic = new Image(COIN);
 			

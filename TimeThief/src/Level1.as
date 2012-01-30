@@ -3,6 +3,7 @@ package
 	import net.flashpunk.Entity;
 	import net.flashpunk.World;
 	import net.flashpunk.FP;
+	import net.flashpunk.utils.Draw;
 	
 	/**
 	 * ...
@@ -22,6 +23,9 @@ package
 		public static const TILE_SIZE:int = 75;
 		public const MAP_Y:int = 8;
 		public const MAP_X:int = 90;
+		
+		public var time:int = 0;
+		public var temporal:int = 1000;
 		
 		public var obstacles:Array = new Array();
 		public var collectables:Array = new Array();
@@ -99,50 +103,67 @@ package
 		
 		override public function update():void
 		{
-			super.update();
-			
-			for (var i:int = 0; i < obstacles.length; i++)
+	
+			time ++;
+			if (time == 1)
 			{
-				//trace("here");
-				///STILL NEED TO REMOVE WHEN OFF MAP
+				// Reset the counter after 1 second has elapsed.
+				time = 0;
+				
+				super.update();
+				
+				Draw.rect(50, 50, temporal, 10, 0xFFFFFF, 0, true);
+								
+				temporal--;
+				if (temporal <= 0 )
+				{
+					trace("no energy");
+				}
+				
+				//for (var i:int = 0; i < obstacles.length; i++)
+				
+					///STILL NEED TO REMOVE WHEN OFF MAP
 				if (Level1.player.blinkTo == false) //If the player is not in the future
 				{
-					if(collideRect("player", obstacles[i].collideX, obstacles[i].collideY, obstacles[i].collideWidth, obstacles[i].collideHeight))
+					if(Level1.player.collide("obstacle", player.x, player.y))
+					//if (Level1.player.collide("obstacle", player.x, player.y))
+					//if(collideRect("player", obstacles[i].collideX, obstacles[i].collideY, obstacles[i].collideWidth, obstacles[i].collideHeight))
 					{
-						trace("HIT");
-						break;
+						temporal--;
+						trace("hit");
+						//break;
+					}
+					
+					var tempEnt:Entity = Level1.player.collide("collectable", player.x, player.y);
+					if (tempEnt)
+					//if(collideRect("player", collectables[j].collideX, collectables[j].collideY, collectables[j].collideWidth, collectables[j].collideHeight))
+					{
+						//var tempCollect:Collectable = tempEnt;
+						temporal += 100;
+						remove(tempEnt);
+						trace("collect");
+						//break;
 					}
 				}
-			}
-			
-			for (var j:int = 0; j < collectables.length; j++)
-			{
-				if (Level1.player.blinkTo == false) //If the player is not in the future
+				//}
+							
+				if (Level1.player.blinkTo)
 				{
-					if(collideRect("player", collectables[j].collideX, collectables[j].collideY, collectables[j].collideWidth, collectables[j].collideHeight))
-					{
-						trace("COLLECT");
-						break;
-					}
+					temporal -= 5;
+					bringToFront( futureBG1 );
+					bringToFront( futureBG2 );
+					bringToFront( player );
 				}
-			}
-						
-			if (Level1.player.blinkTo)
-			{
-				bringToFront( futureBG1 );
-				bringToFront( futureBG2 );
-				bringToFront( player );
-			}
-			
-			if (Level1.player.blinkBack)
-			{			
-				sendToBack(futureBG1);
-				sendToBack(futureBG2);
-				Level1.player.blinkTo = false;
-				Level1.player.blinkBack = false;
-			}
-			
-			
+				
+				if (Level1.player.blinkBack)
+				{			
+					sendToBack(futureBG1);
+					sendToBack(futureBG2);
+					Level1.player.blinkTo = false;
+					Level1.player.blinkBack = false;
+				}
+				
+			}	
 		}
 		
 	}

@@ -9,10 +9,12 @@ package
 	 */
 	public class Collectable extends Item 
 	{
-		
-		public function Collectable(x:Number = 0, y:Number = 0, collideX:Number = 0, collideY:Number = 0) 
+		public var temporalYeild:int;
+		public function Collectable(x:Number = 0, y:Number = 0, collideX:Number = 0, collideY:Number = 0, temporalYeild:Number = 5 ) 
 		{
 			super(x, y, collideX, collideY);
+			
+			this.temporalYeild = temporalYeild;
 			
 			type = "collectable";
 		}
