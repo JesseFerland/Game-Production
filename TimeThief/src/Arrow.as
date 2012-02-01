@@ -36,6 +36,22 @@ package
 
 		}
 		
+		override public function update():void
+		{
+			if (!isRemoved)
+			{
+				if (this.x >= -(this.width) )
+				{
+					this.x -= Level1.player.speed * 2;
+				}
+			
+				else if (this)
+				{	
+					isRemoved = true;					
+				}
+			}
+		}
+		
 	}
 
 }

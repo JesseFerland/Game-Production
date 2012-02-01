@@ -48,7 +48,7 @@ package
 			sprPlayer = new Spritemap(PLAYER, frameWidth, frameHeight);
 				
 			sprPlayer.add("running", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], 20, true);
-			sprPlayer.add("jumping", [16, 17, 18, 19, 20], 10, true);
+			sprPlayer.add("jumping", [16, 17, 18, 19, 20, 21], 10, true);
 			sprPlayer.add("diving", [21], 20, true);
 			sprPlayer.add("rolling", [22, 23, 24], 12, true);
 			graphic = sprPlayer;
@@ -62,6 +62,8 @@ package
 		}
 		override public function update():void
 		{	
+			pixelMask = new Pixelmask (sprPlayer.getBuffer());
+			mask = pixelMask;
 					
 			if (Input.check(Key.SPACE) && spaceIsPressable)
 			{
@@ -92,12 +94,16 @@ package
 			}
 			
 			if (jump)
-			{							
+			{	
 				if (jumpCounter > 0)
 				{
-					if (sprPlayer.index == 2)
+					if (sprPlayer.index == 2 )//&& sprPlayer.currentAnim() == "jumping")
 					{
-						sprPlayer.lock();
+						var temp:String = sprPlayer.currentAnim;
+						if (temp == "jumping")
+						{
+							sprPlayer.lock();
+						}
 					}
 					else
 					{
@@ -111,7 +117,8 @@ package
 				if (jumpCounter == 0)
 				{
 					sprPlayer.unlock();
-					if (sprPlayer.index == 3)
+					
+					if (sprPlayer.index == 5)
 					{
 						sprPlayer.play("diving");
 					}

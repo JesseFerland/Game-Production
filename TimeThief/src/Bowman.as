@@ -33,7 +33,7 @@ package
 			
 			sprBow = new Spritemap(BOW, frameWidth, frameHeight);
 				
-			sprBow.add("attack", [0, 1, 2, 3, 4, 5, 6, 7], 12, true);
+			sprBow.add("attack", [0, 1, 2, 3, 4, 5, 6, 7], 10, true);
 			
 			graphic = sprBow;
 			
@@ -52,7 +52,9 @@ package
 				sprBow.play("attack");
 				if (sprBow.index == 1)
 				{
-					shoot = true;					
+					var arrow:Arrow = new Arrow(this.x - 20, this.y + 55);
+					FP.world.add( arrow );
+					Level1.obstacles.push(arrow);
 				}
 			}
 			
