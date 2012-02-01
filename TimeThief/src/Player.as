@@ -6,6 +6,8 @@ package
 	import net.flashpunk.utils.Input;
 	import net.flashpunk.utils.Key;
 	import net.flashpunk.graphics.Spritemap;
+	import net.flashpunk.masks.Pixelmask;
+	
 	
 	/**
 	 * ...
@@ -13,13 +15,19 @@ package
 	 */
 	public class Player extends Entity 
 	{
-		[Embed(source = 'assets/spritesCTRHEAD.png')] private const PLAYER:Class;
+		[Embed(source = 'assets/player_sprite.png')] private const PLAYER:Class;
 		
-		public var sprCharacter:Spritemap = new Spritemap(PLAYER, 150, 150);
+		private var frameWidth:int = 150;
+		private var frameHeight:int = 150;
+		
+		public var sprPlayer:Spritemap; 
+		public var pixelMask:Pixelmask;
 		
 		public var speed:int = 8;
 		public var blinkTo:Boolean;
 		public var blinkBack:Boolean;
+		public var hit:Boolean = false;
+		public var hitCounter:int = 0;
 		
 		private var jumpSpeed:int = 8;
 		private var fallSpeed:int = 11;		
@@ -27,11 +35,8 @@ package
 		private var spaceHoldCounter:int = 0;
 		private var spaceIsPressable:Boolean = true;
 		private var canJump:Boolean = true;
-		private var jump:Boolean = false;
+		public var jump:Boolean = false;
 		private var jumpCounter:int = 0;	
-		//private var isRolling:Boolean = false;
-		//private var isDiving:Boolean = false;
-		//private var jumpAnim:Boolean = false;
 		
 		public function Player(x:Number = 0, y:Number = 0 ) 
 		{
@@ -40,15 +45,17 @@ package
 			this.x = x;
 			this.y = y;
 			
-			this.width = 150;
-			this.height = 150;
+			sprPlayer = new Spritemap(PLAYER, frameWidth, frameHeight);
 				
-			sprCharacter.add("running", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], 20, true);
-			sprCharacter.add("jumping", [16, 17, 18], 20, true);
-			sprCharacter.add("diving", [19], 20, true);
-			sprCharacter.add("rolling", [20, 21, 22], 10, true);
-			graphic = sprCharacter;
+			sprPlayer.add("running", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], 20, true);
+			sprPlayer.add("jumping", [16, 17, 18, 19, 20], 10, true);
+			sprPlayer.add("diving", [21], 20, true);
+			sprPlayer.add("rolling", [22, 23, 24], 12, true);
+			graphic = sprPlayer;
 			type = "player";
+			
+			pixelMask = new Pixelmask (sprPlayer.getBuffer());
+			mask = pixelMask;
 			
 			blinkTo = false;
 			blinkBack = false;
@@ -88,22 +95,26 @@ package
 			{							
 				if (jumpCounter > 0)
 				{
-					if (sprCharacter.index == 2)
+					if (sprPlayer.index == 2)
 					{
-						sprCharacter.lock();
+						sprPlayer.lock();
 					}
 					else
 					{
-						sprCharacter.play("jumping");
+						sprPlayer.play("jumping");
 					}
+					
 					this.y -= jumpSpeed;
 					jumpCounter--;
 				}
 				
 				if (jumpCounter == 0)
 				{
-					sprCharacter.play("diving");
-					sprCharacter.unlock();
+					sprPlayer.unlock();
+					if (sprPlayer.index == 3)
+					{
+						sprPlayer.play("diving");
+					}
 					
 					if (this.y < Level1.STARTING_Y)
 					{
@@ -111,7 +122,7 @@ package
 					}
 					else if (this.y >= Level1.STARTING_Y)
 					{
-						sprCharacter.play("rolling");
+						sprPlayer.play("rolling");
 						jump = false;
 					}
 				}
@@ -119,17 +130,17 @@ package
 			
 			else 
 			{
-				if (sprCharacter.currentAnim == "rolling")
+				if (sprPlayer.currentAnim == "rolling")
 				{
 					
-					if (sprCharacter.index == 2)
+					if (sprPlayer.index == 2)
 					{
-						sprCharacter.play("running");
+						sprPlayer.play("running");
 					}
 				}
 				else
 				{
-					sprCharacter.play("running");
+					sprPlayer.play("running");
 				}
 			}
 			
@@ -142,7 +153,21 @@ package
 					blinkTo = false;
 				}
 			}
-
+			
+			if (hit)
+			{
+				hitCounter = 3; //3 seconds
+			}
+			
+			if (hitCounter > 0)
+			{
+				hitCounter--;				
+			}
+				
+			if (hitCounter == 0 && hit == true)
+			{
+				hit = false
+			}				
 		}
 		
 		private function blink():void

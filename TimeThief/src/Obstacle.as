@@ -9,9 +9,9 @@ package
 	public class Obstacle extends Item 
 	{
 		
-		public function Obstacle(x:Number = 0, y:Number = 0, collideX:Number = 0, collideY:Number = 0, collideWidth:Number = 75, collideHeight:Number = 75) 
+		public function Obstacle(x:Number = 0, y:Number = 0) 
 		{
-			super(x, y, collideX, collideY, collideWidth, collideHeight);
+			super(x, y);
 			
 			type = "obstacle";
 			

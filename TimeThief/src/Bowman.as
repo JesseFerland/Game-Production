@@ -5,41 +5,42 @@ package
 	import net.flashpunk.graphics.Image;
 	import net.flashpunk.graphics.Spritemap;
 	import net.flashpunk.masks.Pixelmask;
+	import net.flashpunk.FP;
 	
 	/**
 	 * ...
 	 * @author Jesse Ferland
 	 */
-	public class Knight extends Obstacle 
+	public class Bowman extends Obstacle 
 	{
-		[Embed(source = 'assets/knight_sprite.png')] private const KNIGHT:Class;
+		[Embed(source = 'assets/bowman_sprite.png')] private const BOW:Class;
 		
 		private var frameWidth:int = 150;
 		private var frameHeight:int = 150;
 		
-		public var sprKnight:Spritemap; 
+		public var sprBow:Spritemap; 
 		public var pixelMask:Pixelmask;
 		
+		public var shoot:Boolean = false;
 		private var inRange:Boolean;
 		
-		public function Knight(x:Number=0, y:Number=0) 
+		public function Bowman(x:Number=0, y:Number=0) 
 		{
 			this.x = x;
 			this.y = y;
 			
 			super(this.x, this.y);
 			
-			sprKnight = new Spritemap(KNIGHT, frameWidth, frameHeight);
+			sprBow = new Spritemap(BOW, frameWidth, frameHeight);
 				
-			sprKnight.add("attack", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], 12, true);
+			sprBow.add("attack", [0, 1, 2, 3, 4, 5, 6, 7], 12, true);
 			
-			graphic = sprKnight;
+			graphic = sprBow;
 			
-			type = "knight";
+			type = "bowman";
 			
-			pixelMask = new Pixelmask (sprKnight.getBuffer());
+			pixelMask = new Pixelmask (sprBow.getBuffer());
 			mask = pixelMask;
-			
 		}
 		
 		override public function update():void
@@ -48,18 +49,24 @@ package
 			
 			if (inRange)
 			{
-				sprKnight.play("attack");
-				if (sprKnight.index == 9)
+				sprBow.play("attack");
+				if (sprBow.index == 1)
 				{
-					sprKnight.lock();
+					shoot = true;					
 				}
 			}
 			
-			if (this.x <= 200)
+			if (this.x < 0)
+			{
+				sprBow.lock();
+			}			
+			else if (this.x <= 500)
 			{
 				inRange = true;
 			}
+			
 		}
+		
 	}
 
 }

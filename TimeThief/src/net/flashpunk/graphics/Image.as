@@ -15,6 +15,15 @@ package net.flashpunk.graphics
 	public class Image extends Graphic
 	{
 		/**
+		 * Get the BitmapData which is used to render to the screen. This should be helpful for creating masks.
+		 * @return
+		 */
+		public function getBuffer():BitmapData
+		{
+			return _buffer;
+		}
+		
+		/**
 		 * Rotation of the image, in degrees.
 		 */
 		public var angle:Number = 0;
