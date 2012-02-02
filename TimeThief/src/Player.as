@@ -194,6 +194,7 @@ package
 		
 		public function blink():void
 		{
+			Level1.temporal -= Level1.BLINK_TEMPORAL_COST;
 			invincible = true;
 			hitCounter = 90;
 			whenBlink.play();

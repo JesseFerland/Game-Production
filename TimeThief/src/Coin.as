@@ -4,6 +4,7 @@ package
 	import net.flashpunk.graphics.Image;
 	import net.flashpunk.graphics.Spritemap;
 	import net.flashpunk.masks.Pixelmask;
+	import net.flashpunk.Sfx;
 	
 	/**
 	 * ...
@@ -13,9 +14,12 @@ package
 	{
 		
 		[Embed(source = 'assets/coin.png')] private const COIN:Class;
+		[Embed(source = 'assets/coin.mp3')] private const COLLECT:Class;
 		
 		private var frameWidth:int = 32;
 		private var frameHeight:int = 32;
+		
+		public static var collect:Sfx;
 		
 		public var sprCoin:Spritemap;
 		public var pixelMask:Pixelmask;
@@ -34,6 +38,8 @@ package
 			graphic = new Image(COIN);
 			
 			type = "coin";
+			
+			collect = new Sfx(COLLECT);
 			
 		}
 		

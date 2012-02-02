@@ -13,7 +13,7 @@ package
 	public class Knight extends Obstacle 
 	{
 		[Embed(source = 'assets/knight_sprite.png')] private const KNIGHT:Class;
-		[Embed(source = 'assets/knight.mp3')] private const SWING:Class;
+		//[Embed(source = 'assets/knight.mp3')] private const SWING:Class;
 		
 		private var frameWidth:int = 150;
 		private var frameHeight:int = 150;
