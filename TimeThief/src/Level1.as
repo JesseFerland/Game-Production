@@ -194,12 +194,7 @@ package
 						printedScore++;	
 					}
 				}
-				
-				else if (temporal > 1000)
-				{
-					temporal == 1000;
-				}
-				
+							
 				else if (Level1.player.blinkTo == false) //If the player is not in the future
 				{
 					temporal--;
@@ -259,6 +254,12 @@ package
 					{
 						Level1.player.y -= Level1.player.speed;
 					}
+				}
+				
+					
+				if (temporal > 1000)
+				{
+					temporal == 1000;
 				}
 							
 				if (Level1.player.y < STARTING_Y && Level1.player.jump == false) //If the character is falling from a hill
