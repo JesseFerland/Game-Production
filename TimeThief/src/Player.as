@@ -7,6 +7,7 @@ package
 	import net.flashpunk.utils.Key;
 	import net.flashpunk.graphics.Spritemap;
 	import net.flashpunk.masks.Pixelmask;
+	import net.flashpunk.Sfx;
 	
 	
 	/**
@@ -17,16 +18,23 @@ package
 	{
 		[Embed(source = 'assets/player_sprite.png')] private const PLAYER:Class;
 		
+		[Embed(source = 'assets/hit.mp3')] private const HIT:Class;
+		
+		[Embed(source = 'assets/blink.mp3')] private const BLINK:Class;
+		
 		private var frameWidth:int = 150;
 		private var frameHeight:int = 150;
 		
 		public var sprPlayer:Spritemap; 
 		public var pixelMask:Pixelmask;
+		public var getHit:Sfx;
+		public var whenBlink:Sfx;
 		
 		public var speed:int = 8;
 		public var blinkTo:Boolean;
 		public var blinkBack:Boolean;
 		public var hit:Boolean = false;
+		public var invincible:Boolean = false;
 		public var hitCounter:int = 0;
 		
 		private var jumpSpeed:int = 8;
@@ -56,6 +64,9 @@ package
 			
 			pixelMask = new Pixelmask (sprPlayer.getBuffer());
 			mask = pixelMask;
+			
+			getHit = new Sfx(HIT);
+			whenBlink = new Sfx(BLINK);
 			
 			blinkTo = false;
 			blinkBack = false;
@@ -163,22 +174,29 @@ package
 			
 			if (hit)
 			{
-				hitCounter = 3; //3 seconds
-			}
+				getHit.play();
+				
+				blink();
+				spaceIsPressable = true;
+				hit = false
+			}	
 			
 			if (hitCounter > 0)
 			{
-				hitCounter--;				
+				hitCounter--;
+				if (hitCounter == 0)
+				{
+					invincible = false;
+				}
 			}
-				
-			if (hitCounter == 0 && hit == true)
-			{
-				hit = false
-			}				
+			
 		}
 		
-		private function blink():void
+		public function blink():void
 		{
+			invincible = true;
+			hitCounter = 90;
+			whenBlink.play();
 			spaceIsPressable = false;
 			blinkTo = true;
 			blinkBack = false;

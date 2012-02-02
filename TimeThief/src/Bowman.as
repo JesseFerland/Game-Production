@@ -50,11 +50,17 @@ package
 			if (inRange)
 			{
 				sprBow.play("attack");
-				if (sprBow.index == 1)
+				if (sprBow.index == 1 && Level1.player.blinkTo == false && shoot == false)
 				{
+					shoot = true;
 					var arrow:Arrow = new Arrow(this.x - 20, this.y + 55);
 					FP.world.add( arrow );
 					Level1.obstacles.push(arrow);
+					
+				}
+				if (sprBow.index == 7)
+				{
+					sprBow.lock();
 				}
 			}
 			
