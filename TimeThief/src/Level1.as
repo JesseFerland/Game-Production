@@ -12,8 +12,7 @@ package
 	 * @author Jesse Ferland
 	 */
 	public class Level1 extends World 
-	{
-		
+	{		
 		public static var player:Player;
 		public static var pastBG1:PastBG;
 		public static var pastBG2:PastBG;
@@ -48,7 +47,6 @@ package
 		public var printedScore:int = 0;
 		public var endGame:Boolean = false;
 		public var scoreString:String;
-		public var options:Object = new Object;
 		
 		public static var obstacles:Array = new Array();
 		public var collectables:Array = new Array();
@@ -77,7 +75,6 @@ package
 		public function Level1() 
 		{
 			loadMap();
-			
 			Level1.player = new Player(STARTING_X, STARTING_Y);
 			add( Level1.player );
 		}
@@ -196,6 +193,11 @@ package
 						
 						printedScore++;	
 					}
+				}
+				
+				else if (temporal > 1000)
+				{
+					temporal == 1000;
 				}
 				
 				else if (Level1.player.blinkTo == false) //If the player is not in the future
