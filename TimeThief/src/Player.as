@@ -36,14 +36,14 @@ package
 		public var hit:Boolean = false;
 		public var invincible:Boolean = false;
 		public var hitCounter:int = 0;
+		public var spaceIsPressable:Boolean = true;		
+		public var jump:Boolean = false;
 		
 		private var jumpSpeed:int = 8;
 		private var fallSpeed:int = 11;		
 		private var blinkCounter:int = 0;
-		private var spaceHoldCounter:int = 0;
-		private var spaceIsPressable:Boolean = true;
+		private var spaceHoldCounter:int = 0;		
 		private var canJump:Boolean = true;
-		public var jump:Boolean = false;
 		private var jumpCounter:int = 0;	
 		
 		public function Player(x:Number = 0, y:Number = 0 ) 
@@ -108,7 +108,7 @@ package
 			{	
 				if (jumpCounter > 0)
 				{
-					if (sprPlayer.index == 2 )//&& sprPlayer.currentAnim() == "jumping")
+					if (sprPlayer.index == 2 )
 					{
 						var temp:String = sprPlayer.currentAnim;
 						if (temp == "jumping")

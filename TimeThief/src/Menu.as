@@ -18,8 +18,6 @@ package
 			add( menuBG );
 			
 			pressStart = new PressStart(250, 400);
-			//pressStart.x = 200;
-			//pressStart.y = 450;
 			add( pressStart );
 			
 		}

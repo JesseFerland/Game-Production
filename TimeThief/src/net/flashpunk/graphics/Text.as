@@ -23,7 +23,7 @@
 		/**
 		 * The font size to assign to new Text objects.
 		 */
-		public static var size:uint = 16;
+		public static var size:uint = 40;
 		
 		/**
 		 * The alignment to assign to new Text objects.
@@ -106,7 +106,7 @@
 			
 			_field.embedFonts = true;
 			_field.wordWrap = _wordWrap;
-			_form = new TextFormat(_font, _size, 0xFFFFFF);
+			_form = new TextFormat(_font, _size, 0x000000);
 			_form.align = _align;
 			_form.leading = _leading;
 			_field.defaultTextFormat = _form;
@@ -261,7 +261,7 @@
 				_form.color = _color;
 				matchStyles();
 			} else {
-				_form.color = 0xFFFFFF;
+				_form.color = 0x003300;
 				_field.setTextFormat(_form);
 			}
 			

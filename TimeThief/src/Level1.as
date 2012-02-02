@@ -5,6 +5,7 @@ package
 	import net.flashpunk.FP;
 	import net.flashpunk.utils.Draw;
 	import net.flashpunk.Sfx;
+	import net.flashpunk.graphics.Text;
 	
 	/**
 	 * ...
@@ -12,7 +13,6 @@ package
 	 */
 	public class Level1 extends World 
 	{
-	//	[Embed(source = 'assets/thunderstruck.mp3')] private const MUSIC:Class;
 		
 		public static var player:Player;
 		public static var pastBG1:PastBG;
@@ -34,13 +34,21 @@ package
 		public const DITCH_TEMPORAL_DAMAGE:int = 100;
 		public const COIN_TEMPORAL_INCREASE:int = 100
 		public const GOBLET_TEMPORAL_INCREASE:int = 300;
-		public static const BLINK_TEMPORAL_COST:int = 75;		
+		public const COIN_SCORE:int = 5;
+		public const GOBLET_SCORE:int = 100;
+		public static const BLINK_TEMPORAL_COST:int = 75;	
+		
 			
 		public static const TILE_SIZE:int = 75;
 		public const MAP_Y:int = 8;
 		public const MAP_X:int = 90;
 		
 		public var time:int = 0;
+		public var score:int = 0;
+		public var printedScore:int = 0;
+		public var endGame:Boolean = false;
+		public var scoreString:String;
+		public var options:Object = new Object;
 		
 		public static var obstacles:Array = new Array();
 		public var collectables:Array = new Array();
@@ -61,7 +69,7 @@ package
 								[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 								[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 								[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-								[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+								[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 7, 0, 0, 0, 5, 0, 0, 2, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 								[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 								[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]];
 							  // 1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 64 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90
@@ -89,8 +97,8 @@ package
 			Level1.temporalGUI.y = 530;
 			
 			Level1.sand = new Sand;
-			Level1.sand.x = 75;
-			Level1.sand.y = 545;
+			Level1.sand.x = 90;
+			Level1.sand.y = 543;
 			
 			add( Level1.futureBG1);
 			add( Level1.futureBG2);
@@ -170,10 +178,27 @@ package
 						
 				if (temporal <= 0 )
 				{
-					trace("no energy");
+					if (endGame == false)
+					{
+						remove(temporalGUI);
+						Level1.player.spaceIsPressable = false;
+						Level1.player.blinkTo = true;
+						endGame = true;
+					}
+					
+					if (printedScore <= score)
+					{
+											
+						scoreString = String(printedScore);
+						sand.graphic = new Text(scoreString);						
+						sand.x = 400;
+						sand.y = 150;
+						
+						printedScore++;	
+					}
 				}
 				
-				if (Level1.player.blinkTo == false) //If the player is not in the future
+				else if (Level1.player.blinkTo == false) //If the player is not in the future
 				{
 					temporal--;
 					
@@ -183,28 +208,24 @@ package
 						{
 							temporal -= KNIGHT_TEMPORAL_DAMAGE;
 							Level1.player.hit = true;
-							trace("knight");
 						}
 						
 						if (Level1.player.collide("bowman", player.x, player.y))
 						{
 							temporal -= BOWMAN_TEMPORAL_DAMAGE;
 							Level1.player.hit = true;
-							trace("bowman");
 						}
 						
 						if (Level1.player.collide("ditch", player.x, player.y))
 						{
 							temporal -= DITCH_TEMPORAL_DAMAGE;
 							Level1.player.hit = true;
-							trace("ditch");
 						}
 						
 						if (Level1.player.collide("rock", player.x, player.y))
 						{
 							temporal -= ROCK_TEMPORAL_DAMAGE;
 							Level1.player.hit = true;
-							trace("rock");
 						}
 						
 						var tempCoin:Entity = Level1.player.collide("coin", player.x, player.y );
@@ -213,7 +234,7 @@ package
 							Coin.collect.play();
 							temporal += COIN_TEMPORAL_INCREASE;
 							remove(tempCoin);
-							trace("coin");
+							score += COIN_SCORE;
 						}
 						
 						var tempGob:Entity = Level1.player.collide("goblet", player.x, player.y );
@@ -221,7 +242,7 @@ package
 						{
 							temporal += GOBLET_TEMPORAL_INCREASE;
 							remove(tempGob);
-							trace("goblet");
+							score += GOBLET_SCORE;
 						}
 						
 						var tempArrow:Entity = Level1.player.collide("arrow", player.x, player.y );
@@ -229,20 +250,15 @@ package
 						{
 							temporal -= BOWMAN_TEMPORAL_DAMAGE;
 							remove(tempArrow);
-							trace("arrow");
 						}
 					}
 					
 					if (Level1.player.collide("hill", player.x, player.y))  //Not in above if statement so unaffected by hit
 					{
 						Level1.player.y -= Level1.player.speed;
-						trace("hill");
 					}
 				}
-				
-				
-			
-				
+							
 				if (Level1.player.y < STARTING_Y && Level1.player.jump == false) //If the character is falling from a hill
 				{
 					Level1.player.y += 5;
